@@ -1,0 +1,41 @@
+.list
+    max-width: 400px
+    margin: 0
+    padding: 0
+    list-style: none
+    margin: 0 auto
+
+.item
+    border-bottom: 1px solid rgba(#113830, .25)
+    &:last-child
+        border-bottom: none
+
+.link
+    color: #6e252c
+    padding: 10px
+    display: flex
+    text-decoration: none
+    transition: color .2s
+    position: relative
+    align-items: center
+
+    &:hover
+        color: #f3c72a
+
+        &::after
+            transform: rotate(45deg)
+            opacity: 1
+
+    &::after
+        content: ""
+        width: 10px
+        height: 10px
+        margin-left: auto
+        border: 2px solid #f3c72a
+        border-left: none
+        border-bottom: none
+        transform: translateX(-10px) rotate(45deg)
+        opacity: 0
+        transition: .2s
+
+

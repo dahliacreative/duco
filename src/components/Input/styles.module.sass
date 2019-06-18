@@ -1,0 +1,58 @@
+.wrapper
+    padding: 4vmin 20px
+
+.panel
+    max-width: 400px
+    margin: 0 auto
+    position: relative
+
+.input
+    display: block
+    width: 100%
+    box-sizing: border-box
+    padding: 10px
+    font-family: 'Roboto', sans-serif
+    border-radius: 4px
+    font-size: 16px
+    outline: none
+    transition: .2s
+    border: none
+    color: #12132a
+
+    &:focus
+        box-shadow: 0 0 0 1px #5e6e63, 0 0 25px rgba(#f3c72a, .75)
+
+.label
+    display: block
+    color: #f3c72a
+    margin-bottom: 20px
+    font-weight: 300
+
+.spinner
+    position: absolute
+    right: 10px
+    bottom: 9px
+    width: 18px
+    height: 18px
+    border: 2px solid #f1f1f1
+    border-radius: 50%
+
+    &::after
+        border: 2px solid #6e252c
+        border-right-color: transparent
+        border-bottom-color: transparent
+        border-top-color: transparent
+        width: 18px
+        height: 18px
+        content: ""
+        position: absolute
+        border-radius: 50%
+        top: -2px
+        left: -2px
+        animation: spin 1s infinite
+
+@keyframes spin
+    from
+        transform: rotate(0deg)
+    to
+        transform: rotate(360deg)
