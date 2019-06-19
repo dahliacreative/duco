@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from "react";
+import PropTypes from "prop-types";
+import useThrottle from "./hooks";
 import styles from "./styles.module.sass";
 
 const Input = ({ updateResults }) => {
   const [term, updateTerm] = useState("");
   const [isLoading, setLoading] = useState(false);
+  const throttledTerm = useThrottle(term, 250);
 
   useEffect(() => {
-    if (term.length) {
+    if (throttledTerm) {
       setLoading(true);
-      fetch(`https://swapi.co/api/people/?search=${term}`)
+      fetch(`https://swapi.co/api/people/?search=${throttledTerm}`)
         .then(response => {
           return response.json();
         })
@@ -19,7 +22,7 @@ const Input = ({ updateResults }) => {
     } else {
       updateResults([]);
     }
-  }, [term, updateResults]);
+  }, [throttledTerm, updateResults]);
 
   return (
     <div className={styles.wrapper}>
@@ -37,6 +40,10 @@ const Input = ({ updateResults }) => {
       </div>
     </div>
   );
+};
+
+Input.propTypes = {
+  updateResults: PropTypes.func.isRequired
 };
 
 export default Input;

@@ -4,6 +4,10 @@
     padding: 0
     list-style: none
     margin: 0 auto
+    background-color: rgba(#fff, .8)
+    backdrop-filter: blur(10px)
+    border-radius: 4px
+    box-shadow: 0 0 0 1px #5e6e63, 0 0 25px rgba(#f3c72a, .75)
 
 .item
     border-bottom: 1px solid rgba(#113830, .25)
@@ -20,7 +24,7 @@
     align-items: center
 
     &:hover
-        color: #f3c72a
+        font-weight: bold
 
         &::after
             transform: rotate(45deg)
@@ -31,7 +35,7 @@
         width: 10px
         height: 10px
         margin-left: auto
-        border: 2px solid #f3c72a
+        border: 2px solid #6e252c
         border-left: none
         border-bottom: none
         transform: translateX(-10px) rotate(45deg)
