@@ -1,6 +1,7 @@
 import React from "react";
 import { mount } from "enzyme";
 import Input from "./";
+import fixtures from "../../fixtures";
 
 describe("<Input/>", () => {
   it("renders without crashing", () => {
@@ -16,13 +17,13 @@ describe("<Input/>", () => {
 
   it("throttles searching", done => {
     const mock = jest.fn();
-    const response = { results: "12345" };
-    fetch.mockResponseOnce(JSON.stringify(response));
     const component = mount(<Input updateResults={mock} />);
     const input = component.find("input");
     input.simulate("change", { target: { value: "han" } });
     setTimeout(() => {
-      expect(mock).toHaveBeenCalledWith(response.results);
+      expect(mock).toHaveBeenCalledWith(
+        fixtures["people/?search=han"].data.results
+      );
       done();
     }, 500);
   });

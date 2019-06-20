@@ -6,7 +6,7 @@ import styles from "./styles.module.sass";
 const Results = () => {
   const data = useContext(Context);
   return (
-    <div>
+    <div className={styles.wrapper}>
       {data.length > 0 && (
         <ul className={styles.list}>
           {data.map(character => {

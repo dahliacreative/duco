@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { Provider } from "../../data/characters";
 import Search from "../Search";
+import Character from "../Character";
 import "./styles.sass";
 
 const App = () => {
@@ -16,7 +17,7 @@ const App = () => {
           path="/"
           render={props => <Search {...props} updateResults={updateResults} />}
         />
-        <Route path="/:id" render={() => <h1>Modal!</h1>} />
+        <Route path="/:id" component={Character} />
       </Provider>
     </Router>
   );

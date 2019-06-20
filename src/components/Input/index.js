@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import useThrottle from "./hooks";
 import styles from "./styles.module.sass";
+import api from "../../api";
 
 const Input = ({ updateResults }) => {
   const [term, updateTerm] = useState("");
@@ -11,14 +12,10 @@ const Input = ({ updateResults }) => {
   useEffect(() => {
     if (throttledTerm) {
       setLoading(true);
-      fetch(`https://swapi.co/api/people/?search=${throttledTerm}`)
-        .then(response => {
-          return response.json();
-        })
-        .then(data => {
-          updateResults(data.results);
-          setLoading(false);
-        });
+      api.get(`people/?search=${throttledTerm}`).then(res => {
+        updateResults(res.data.results);
+        setLoading(false);
+      });
     } else {
       updateResults([]);
     }
@@ -35,6 +32,7 @@ const Input = ({ updateResults }) => {
           value={term}
           onChange={e => updateTerm(e.target.value)}
           className={styles.input}
+          autoComplete="off"
         />
         {isLoading && <span className={styles.spinner} />}
       </div>
