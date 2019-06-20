@@ -9,14 +9,11 @@ const App = () => {
   const [results, updateResults] = useState([]);
   return (
     <Router>
-      <Provider data={results}>
+      <Provider data={results} updateResults={updateResults}>
         <h1 className="logo">
           <span>SW</span>API
         </h1>
-        <Route
-          path="/"
-          render={props => <Search {...props} updateResults={updateResults} />}
-        />
+        <Route path="/" component={Search} />
         <Route path="/:id" component={Character} />
       </Provider>
     </Router>

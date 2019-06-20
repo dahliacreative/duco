@@ -4,7 +4,7 @@ import Context from "../../data/characters";
 import styles from "./styles.module.sass";
 
 const Results = () => {
-  const data = useContext(Context);
+  const { data } = useContext(Context);
   return (
     <div className={styles.wrapper}>
       {data.length > 0 && (
