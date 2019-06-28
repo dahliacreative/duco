@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import PropTypes from "prop-types";
 import cx from "classnames";
 import styles from "./styles.module.sass";
 import api from "../../api";
+import moment from "moment";
 
 const titleCase = string => string.replace(/^\w/, c => c.toUpperCase());
 
@@ -12,23 +13,58 @@ const Character = ({ history, match }) => {
   const [films, setFilms] = useState([]);
   const [closing, close] = useState(false);
 
+  const storeCharacter = useCallback(
+    char => {
+      setCharacter({ ...char, lastFetched: Date.now() });
+      localStorage.setItem(`people_${match.params.id}`, JSON.stringify(char));
+    },
+    [setCharacter, match.params.id]
+  );
+
+  const storeFilm = useCallback((film, title) => {
+    localStorage.setItem(
+      film,
+      JSON.stringify({ title, lastFetched: Date.now() })
+    );
+  }, []);
+
   useEffect(() => {
-    api.get(`people/${match.params.id}/`).then(res => setCharacter(res.data));
-  }, [match.params.id]);
+    const cachedChar = localStorage.getItem(`people_${match.params.id}`);
+    const character = cachedChar ? JSON.parse(cachedChar) : null;
+    if (character && moment() < moment(character.lastFetched).add(1, "d")) {
+      setCharacter({ ...character });
+    } else {
+      api
+        .get(`people/${match.params.id}/`)
+        .then(res => storeCharacter(res.data));
+    }
+  }, [match.params.id, storeCharacter]);
 
   useEffect(() => {
     if (character) {
-      const promises = character.films.map(film =>
-        api
-          .get(film.replace("https://swapi.co/api/", ""))
-          .then(res => res.data.title)
-      );
+      const promises = character.films.map(film => {
+        const cachedFilm = localStorage.getItem(film);
+        const parsedFilm = cachedFilm ? JSON.parse(cachedFilm) : null;
+        if (
+          parsedFilm &&
+          moment() < moment(parsedFilm.lastFetched).add(1, "d")
+        ) {
+          return parsedFilm.title;
+        } else {
+          return api
+            .get(film.replace("https://swapi.co/api/", ""))
+            .then(res => {
+              storeFilm(film, res.data.title);
+              return res.data.title;
+            });
+        }
+      });
       Promise.all(promises).then(films => {
         setFilms(films);
         setLoading(false);
       });
     }
-  }, [character]);
+  }, [character, storeFilm]);
 
   useEffect(() => {
     if (closing) {
